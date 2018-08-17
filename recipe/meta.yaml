@@ -20,12 +20,8 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-  host:
-    - jpeg  # [unix]
-    - libpng  # [unix]
-    - libtiff  # [unix]
-    - giflib  # [unix]
-  run:
+    - make  # [unix]
+  host:  # [unix]
     - jpeg  # [unix]
     - libpng  # [unix]
     - libtiff  # [unix]
