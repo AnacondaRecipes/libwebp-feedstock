@@ -1,6 +1,6 @@
 {% set name = "webp" %}
-{% set version = "1.1.0" %}
-{% set sha256 = "98a052268cc4d5ece27f76572a7f50293f439c17a98e67c4ea0c7ed6f50ef043" %}
+{% set version = "1.2.0" %}
+{% set sha256 = "2fc8bbde9f97f2ab403c0224fb9ca62b2e6852cbc519e91ceaa7c153ffd88a0c" %}
 
 package:
   name: lib{{ name|lower }}
