@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Get an updated config.sub and config.guess
+cp -r ${BUILD_PREFIX}/share/libtool/build-aux/config.* .
+
 # The libwebp build script doesn't pick all the other libraries up on its own
 # (even though it should by using PREFIX), so pass all the necessary parameters
 # for finding other imaging libraries to the configure script.

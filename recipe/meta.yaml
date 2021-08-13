@@ -20,7 +20,8 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    - make  # [unix]
+    - make     # [unix]
+    - libtool  # [unix]
   host:  # [unix]
     - jpeg  # [unix]
     - libpng  # [unix]
