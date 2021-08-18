@@ -1,6 +1,6 @@
 {% set name = "webp" %}
-{% set version = "1.2.0" %}
-{% set sha256 = "2fc8bbde9f97f2ab403c0224fb9ca62b2e6852cbc519e91ceaa7c153ffd88a0c" %}
+{% set version = "1.2.1" %}
+{% set sha256 = "808b98d2f5b84e9b27fdef6c5372dac769c3bda4502febbfa5031bd3c4d7d018" %}
 
 package:
   name: lib{{ name|lower }}
@@ -20,7 +20,9 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    - make     # [unix]
+    - autoconf  # [unix]
+    - automake  # [unix]
+    - make  # [unix]
     - libtool  # [unix]
   host:  # [unix]
     - jpeg  # [unix]
@@ -29,7 +31,14 @@ requirements:
     - giflib  # [unix]
 
 test:
+  source_files:
+    - examples/test.webp
   commands:
+    - cwebp -longhelp  # [unix]
+    - dwebp -h  # [unix]
+    - webpinfo -version  # [unix]
+    - dwebp examples/test.webp  # [not win]
+    - dwebp examples\\test.webp  # [win]
     - test -f $PREFIX/lib/libwebp.a  # [unix]
     - test -f $PREFIX/lib/libwebp.dylib  # [osx]
     - test -f $PREFIX/lib/libwebp.so  # [linux]
