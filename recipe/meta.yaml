@@ -22,11 +22,12 @@ requirements:
     - {{ compiler('c') }}
     - make     # [unix]
     - libtool  # [unix]
-  host:  # [unix]
-    - jpeg  # [unix]
-    - libpng  # [unix]
+  host:        # [unix]
+    - jpeg     # [unix]
+    - libpng   # [unix]
     - libtiff  # [unix]
-    - giflib  # [unix]
+    - giflib   # [unix]
+    - libwebp-base {{ version }}
 
 test:
   source_files:
