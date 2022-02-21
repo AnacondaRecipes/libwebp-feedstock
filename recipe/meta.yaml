@@ -15,40 +15,51 @@ build:
   number: 0
   run_exports:
     # https://abi-laboratory.pro/?view=timeline&l=libwebp
-    - {{ pin_subpackage('libwebp', max_pin='x.x') }}
+    - {{ pin_compatible('libwebp-base') }}
 
 requirements:
   build:
-    - {{ compiler('c') }}
-    - make     # [unix]
-    - libtool  # [unix]
-  host:  # [unix]
-    - jpeg  # [unix]
-    - libpng  # [unix]
-    - libtiff  # [unix]
-    - giflib  # [unix]
+    - {{ compiler('c') }}  # [not win]
+    - gnuconfig            # [unix]
+    - make                 # [not win]
+  host:
+    - giflib   # [not win]
+    - jpeg     # [not win]
+    - libpng   # [not win]
+    - libtiff  # [not win]
+    - libwebp-base {{ version }}
+  run:
+    - giflib   # [not win]
+    - jpeg     # [not win]
+    - libpng   # [not win]
+    - libtiff  # [not win]
+    - libwebp-base {{ version }}
 
 test:
+  source_files:
+    - examples/test.webp
   commands:
+    - test -f $PREFIX/bin/cwebp  # [unix]
+    - test -f $PREFIX/bin/dwebp  # [unix]
     - test -f $PREFIX/lib/libwebp.a  # [unix]
     - test -f $PREFIX/lib/libwebp.dylib  # [osx]
     - test -f $PREFIX/lib/libwebp.so  # [linux]
-    - test -f $PREFIX/bin/cwebp  # [unix]
-    - test -f $PREFIX/bin/dwebp  # [unix]
     - test -f $PREFIX/include/webp/decode.h  # [unix]
     - test -f $PREFIX/include/webp/encode.h  # [unix]
     - test -f $PREFIX/include/webp/types.h  # [unix]
-    - if not exist %LIBRARY_LIB%\\libwebp.lib exit 1  # [win]
-    - if not exist %LIBRARY_LIB%\\libwebpdecoder.lib exit 1  # [win]
+    - dwebp examples/test.webp  # [not win]
     - if not exist %LIBRARY_BIN%\\cwebp.exe exit 1  # [win]
     - if not exist %LIBRARY_BIN%\\dwebp.exe exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\libwebp.lib exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\libwebpdecoder.lib exit 1  # [win]
     - if not exist %LIBRARY_INC%\\webp\\decode.h exit 1  # [win]
     - if not exist %LIBRARY_INC%\\webp\\encode.h exit 1  # [win]
     - if not exist %LIBRARY_INC%\\webp\\types.h exit 1  # [win]
 
 about:
   home: https://developers.google.com/speed/webp/
-  license: Google
+  license: BSD-3-Clause
+  license_family: BSD
   license_file: COPYING
   summary: "WebP image library"
   description: |
