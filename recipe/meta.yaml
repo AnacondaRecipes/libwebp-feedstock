@@ -15,25 +15,18 @@ build:
   number: 0
   run_exports:
     # https://abi-laboratory.pro/?view=timeline&l=libwebp
-    - {{ pin_compatible('libwebp-base') }}
+    - {{ pin_subpackage('libwebp', max_pin='x.x') }}
 
 requirements:
   build:
-    - {{ compiler('c') }}  # [not win]
-    - libtool              # [unix]
-    - make                 # [not win]
-  host:
-    - giflib   # [not win]
-    - jpeg     # [not win]
-    - libpng   # [not win]
-    - libtiff  # [not win]
-    - libwebp-base {{ version }}
-  run:
-    - giflib   # [not win]
-    - jpeg     # [not win]
-    - libpng   # [not win]
-    - libtiff  # [not win]
-    - libwebp-base {{ version }}
+    - {{ compiler('c') }}
+    - make     # [unix]
+    - libtool  # [unix]
+  host:  # [unix]
+    - jpeg  # [unix]
+    - libpng  # [unix]
+    - libtiff  # [unix]
+    - giflib  # [unix]
 
 test:
   source_files:
