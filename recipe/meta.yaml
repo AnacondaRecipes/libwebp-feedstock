@@ -1,6 +1,6 @@
 {% set name = "webp" %}
-{% set version = "1.2.0" %}
-{% set sha256 = "2fc8bbde9f97f2ab403c0224fb9ca62b2e6852cbc519e91ceaa7c153ffd88a0c" %}
+{% set version = "1.2.2" %}
+{% set sha256 = "7656532f837af5f4cec3ff6bafe552c044dc39bf453587bd5b77450802f4aee6" %}
 
 package:
   name: lib{{ name|lower }}
@@ -22,33 +22,38 @@ requirements:
     - {{ compiler('c') }}
     - make     # [unix]
     - libtool  # [unix]
-  host:  # [unix]
-    - jpeg  # [unix]
-    - libpng  # [unix]
+  host:        # [unix]
+    - jpeg     # [unix]
+    - libpng   # [unix]
     - libtiff  # [unix]
-    - giflib  # [unix]
+    - giflib   # [unix]
+    - libwebp-base {{ version }}
 
 test:
+  source_files:
+    - examples/test.webp
   commands:
+    - test -f $PREFIX/bin/cwebp  # [unix]
+    - test -f $PREFIX/bin/dwebp  # [unix]
     - test -f $PREFIX/lib/libwebp.a  # [unix]
     - test -f $PREFIX/lib/libwebp.dylib  # [osx]
     - test -f $PREFIX/lib/libwebp.so  # [linux]
-    - test -f $PREFIX/bin/cwebp  # [unix]
-    - test -f $PREFIX/bin/dwebp  # [unix]
     - test -f $PREFIX/include/webp/decode.h  # [unix]
     - test -f $PREFIX/include/webp/encode.h  # [unix]
     - test -f $PREFIX/include/webp/types.h  # [unix]
-    - if not exist %LIBRARY_LIB%\\libwebp.lib exit 1  # [win]
-    - if not exist %LIBRARY_LIB%\\libwebpdecoder.lib exit 1  # [win]
+    - dwebp examples/test.webp  # [not win]
     - if not exist %LIBRARY_BIN%\\cwebp.exe exit 1  # [win]
     - if not exist %LIBRARY_BIN%\\dwebp.exe exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\libwebp.lib exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\libwebpdecoder.lib exit 1  # [win]
     - if not exist %LIBRARY_INC%\\webp\\decode.h exit 1  # [win]
     - if not exist %LIBRARY_INC%\\webp\\encode.h exit 1  # [win]
     - if not exist %LIBRARY_INC%\\webp\\types.h exit 1  # [win]
 
 about:
   home: https://developers.google.com/speed/webp/
-  license: Google
+  license: BSD-3-Clause
+  license_family: BSD
   license_file: COPYING
   summary: "WebP image library"
   description: |
