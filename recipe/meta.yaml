@@ -12,7 +12,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
   run_exports:
     # https://abi-laboratory.pro/?view=timeline&l=libwebp
     - {{ pin_subpackage('libwebp', max_pin='x.x') }}
@@ -20,14 +20,13 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    - make     # [unix]
-    - libtool  # [unix]
-  host:        # [unix]
-    - jpeg     # [unix]
-    - libpng   # [unix]
-    - libtiff  # [unix]
-    - giflib   # [unix]
-    - libwebp-base {{ version }}
+    - cmake
+    - ninja
+  host:
+    - jpeg # [unix]
+    - libpng
+    - libtiff
+    - giflib
 
 test:
   source_files:

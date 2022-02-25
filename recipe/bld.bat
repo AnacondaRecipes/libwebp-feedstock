@@ -1,18 +1,19 @@
+md build
+cd build
 
-:: Build!
-nmake /f Makefile.vc CFG=release-static RTLIBCFG=static OBJDIR=output
+cmake -LAH -GNinja .. ^
+	-DCMAKE_BUILD_TYPE=Release                              ^
+	-DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX%           ^
+	-DCMAKE_FIND_ROOT_PATH=%LIBRARY_PREFIX%;%PREFIX%;%BUILD_PREFIX%    ^
+	-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY
+if errorlevel 1 exit 1
+cmake --build .
+if errorlevel 1 exit 1
+cmake --install .
 if errorlevel 1 exit 1
 
-:: Copy the dll's of these dependencies
-copy output\release-static\%ARCH%\bin\cwebp.exe %LIBRARY_PREFIX%\bin\cwebp.exe
-copy output\release-static\%ARCH%\bin\dwebp.exe %LIBRARY_PREFIX%\bin\dwebp.exe
-copy output\release-static\%ARCH%\lib\libwebp.lib %LIBRARY_PREFIX%\lib\libwebp.lib
-copy output\release-static\%ARCH%\lib\libwebp.lib %LIBRARY_PREFIX%\lib\libwebpdecoder.lib
+:: for backwards compatibility with previous make build
+copy %LIBRARY_PREFIX%\lib\webp.lib %LIBRARY_PREFIX%\lib\libwebp.lib
 if errorlevel 1 exit 1
-
-:: Copy header files
-mkdir %LIBRARY_PREFIX%\include\webp\
-copy src\webp\decode.h %LIBRARY_PREFIX%\include\webp\
-copy src\webp\encode.h %LIBRARY_PREFIX%\include\webp\
-copy src\webp\types.h %LIBRARY_PREFIX%\include\webp\
+copy %LIBRARY_PREFIX%\lib\webpdecoder.lib %LIBRARY_PREFIX%\lib\libwebpdecoder.lib
 if errorlevel 1 exit 1
