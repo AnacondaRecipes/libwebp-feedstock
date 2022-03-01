@@ -1,16 +1,10 @@
 #!/bin/bash
+mkdir build
+cd build
+cmake -LAH -GNinja ..                                                  \
+    -DCMAKE_INSTALL_PREFIX=${PREFIX}                                   \
+    -DCMAKE_BUILD_TYPE=Release
 
-# Get an updated config.sub and config.guess
-cp -r ${BUILD_PREFIX}/share/libtool/build-aux/config.* .
+cmake --build .
 
-# The libwebp build script doesn't pick all the other libraries up on its own
-# (even though it should by using PREFIX), so pass all the necessary parameters
-# for finding other imaging libraries to the configure script.
-./configure --prefix=${PREFIX} --disable-gl --disable-dependency-tracking \
-	--enable-libwebpmux --enable-libwebpdemux --enable-libwebpdecoder \
-	--with-jpeglibdir=${PREFIX}/lib --with-jpegincludedir=${PREFIX}/include \
-	--with-tifflibdir=${PREFIX}/lib --with-tiffincludedir=${PREFIX}/include \
-	--with-giflibdir=${PREFIX}/lib --with-gifincludedir=${PREFIX}/include
-make 
-make check
-make install
+cmake --install .
